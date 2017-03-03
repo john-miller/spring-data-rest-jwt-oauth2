@@ -1,0 +1,1 @@
+INSERT INTO TODO (ID, NAME, DESCRIPTION) VALUES (1, 'Sample TODO', 'This is a sample todo');
