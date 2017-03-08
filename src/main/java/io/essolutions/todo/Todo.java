@@ -15,7 +15,7 @@ public class Todo {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Account owner;
 	
 	private String name;
