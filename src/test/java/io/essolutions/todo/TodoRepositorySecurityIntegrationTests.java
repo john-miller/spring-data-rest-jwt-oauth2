@@ -34,13 +34,29 @@ public class TodoRepositorySecurityIntegrationTests {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
+	@WithMockUser(username="test1", roles="USER")
+	public void saveWithNonOwnerUser() {
+		Todo todo = new Todo();
+		todo.setId(1);
+		todoRepository.save(todo);
+	}
+	
+	@Test
+	@WithMockOAuth2User(scopes="write", username="test", roles="USER")
+	public void saveWithOwnerUser() {
+		Todo todo = new Todo();
+		todo.setId(1);
+		assertNotNull(todoRepository.save(todo));
+	}
+	
+	@Test(expected = AccessDeniedException.class)
 	@WithMockOAuth2User(roles="USER")
 	public void findAllPagedWithRegularUser() {
 		todoRepository.findAll(new PageRequest(0,1));
 	}
 	
 	@Test
-	@WithMockOAuth2User(roles="ADMIN")
+	@WithMockOAuth2User(scopes="read", roles="ADMIN")
 	public void findAllWithAdminUser() {
 		assertNotNull(todoRepository.findAll());
 	}
